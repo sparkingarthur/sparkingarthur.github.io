@@ -3,17 +3,21 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Arthur&#39;s Blog</title>
+  <title>sync and isync 翻译 | Arthur&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="All is well that ends well.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Arthur's Blog">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="#PowerPC指令集结构之同步指令：Sync和IsyncNote:翻译自SynchronizingInstructions for PowerPC Instruction Set Architecture : Sync vs Isync，先行概念是ContextSwitch，上下文切换，一般发生在线程切换或者陷入内核的时候，保存上下文，所谓的上下文，可以理解为一个进程的状态(state)，包含各">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sync and isync 翻译">
+<meta property="og:url" content="http://yoursite.com/2016/01/07/sync-and-isync-翻译/index.html">
 <meta property="og:site_name" content="Arthur's Blog">
-<meta property="og:description" content="All is well that ends well.">
+<meta property="og:description" content="#PowerPC指令集结构之同步指令：Sync和IsyncNote:翻译自SynchronizingInstructions for PowerPC Instruction Set Architecture : Sync vs Isync，先行概念是ContextSwitch，上下文切换，一般发生在线程切换或者陷入内核的时候，保存上下文，所谓的上下文，可以理解为一个进程的状态(state)，包含各">
+<meta property="og:image" content="http://i4.tietuku.com/9039c8bb9ceede15.png">
+<meta property="og:image" content="http://i4.tietuku.com/9b0b530b7c786f07.png">
+<meta property="og:image" content="http://i4.tietuku.com/38b9fa929908bb49.png">
+<meta property="og:updated_time" content="2016-01-07T14:30:55.371Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Arthur's Blog">
-<meta name="twitter:description" content="All is well that ends well.">
+<meta name="twitter:title" content="sync and isync 翻译">
+<meta name="twitter:description" content="#PowerPC指令集结构之同步指令：Sync和IsyncNote:翻译自SynchronizingInstructions for PowerPC Instruction Set Architecture : Sync vs Isync，先行概念是ContextSwitch，上下文切换，一般发生在线程切换或者陷入内核的时候，保存上下文，所谓的上下文，可以理解为一个进程的状态(state)，包含各">
   
     <link rel="alternative" href="/atom.xml" title="Arthur&#39;s Blog" type="application/atom+xml">
   
@@ -63,9 +67,7 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-    <article id="post-sync-and-isync-翻译" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-sync-and-isync-翻译" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/01/07/sync-and-isync-翻译/" class="article-date">
   <time datetime="2016-01-07T14:14:26.000Z" itemprop="datePublished">2016-01-07</time>
@@ -78,8 +80,8 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/07/sync-and-isync-翻译/">sync and isync 翻译</a>
+    <h1 class="article-title" itemprop="name">
+      sync and isync 翻译
     </h1>
   
 
@@ -103,99 +105,20 @@
     </footer>
   </div>
   
-</article>
-
-
+    
+<nav id="article-nav">
   
-    <article id="post-test" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/01/07/test/" class="article-date">
-  <time datetime="2016-01-07T08:46:25.000Z" itemprop="datePublished">2016-01-07</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/07/test/">test</a>
-    </h1>
+    <a href="/2016/01/07/test/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">test</div>
+    </a>
   
+</nav>
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="u8FD9_u662F_u6211_u6D4B_u8BD5_u4E00_u4E0BMarkDown_u7684_u8BED_u6CD5"><a href="#u8FD9_u662F_u6211_u6D4B_u8BD5_u4E00_u4E0BMarkDown_u7684_u8BED_u6CD5" class="headerlink" title="这是我测试一下MarkDown的语法"></a>这是我测试一下MarkDown的语法</h2><h3 id="1-_u6D4B_u8BD5_u4E8C_u7EA7"><a href="#1-_u6D4B_u8BD5_u4E8C_u7EA7" class="headerlink" title="1.测试二级"></a>1.测试二级</h3><p>-[]列表<br>-[]列表</p>
-<h3 id="2-_u516C_u5F0F"><a href="#2-_u516C_u5F0F" class="headerlink" title="2.公式"></a>2.公式</h3><p><script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script><br>$$y=x^2$$<br>$$E=mc^2$$</p>
-<h3 id="3-_u4EE3_u7801"><a href="#3-_u4EE3_u7801" class="headerlink" title="3.代码"></a>3.代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="decorator">@arthur</span></span><br><span class="line">print(<span class="string">"hello world"</span>)</span><br></pre></td></tr></table></figure>
-<h3 id="4-_u52A0_u7C97"><a href="#4-_u52A0_u7C97" class="headerlink" title="4.加粗"></a>4.<strong>加粗</strong></h3><p><strong>加粗字体</strong><br>普通字体<br><em>单星号
-</em>单星号<br><em>单星号<br>**</em>三星号</p>
-<h3 id="5-_u56FE_u7247"><a href="#5-_u56FE_u7247" class="headerlink" title="5.图片"></a>5.图片</h3><p><img src="http://i11.tietuku.com/a3405725be763540.jpg" alt="水仙花"></p>
-<h3 id="6-_u94FE_u63A5"><a href="#6-_u94FE_u63A5" class="headerlink" title="6.链接"></a>6.链接</h3><p><a href="http://blog.csdn.net/hahajinbu" target="_blank" rel="external">csdn博客</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/07/test/" data-id="cij4cq9xd0000e0f5rnn1dtck" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
   
 </article>
 
-
-  
-    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/12/31/hello-world/" class="article-date">
-  <time datetime="2015-12-31T03:27:15.623Z" itemprop="datePublished">2015-12-31</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/12/31/hello-world/">Hello World</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick_Start"><a href="#Quick_Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create_a_new_post"><a href="#Create_a_new_post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run_server"><a href="#Run_server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate_static_files"><a href="#Generate_static_files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy_to_remote_sites"><a href="#Deploy_to_remote_sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2015/12/31/hello-world/" data-id="cij4cq9xs0002e0f52mzpjbeg" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-  
 </section>
         
           <aside id="sidebar">
