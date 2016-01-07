@@ -14,7 +14,7 @@
 <meta property="og:image" content="http://i4.tietuku.com/9039c8bb9ceede15.png">
 <meta property="og:image" content="http://i4.tietuku.com/9b0b530b7c786f07.png">
 <meta property="og:image" content="http://i4.tietuku.com/38b9fa929908bb49.png">
-<meta property="og:updated_time" content="2016-01-07T14:33:50.489Z">
+<meta property="og:updated_time" content="2016-01-07T14:35:36.036Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="sync and isync 翻译">
 <meta name="twitter:description" content="PowerPC指令集结构之同步指令：Sync和IsyncNote:翻译自SynchronizingInstructions for PowerPC Instruction Set Architecture : Sync vs Isync，先行概念是ContextSwitch，上下文切换，一般发生在线程切换或者陷入内核的时候，保存上下文，所谓的上下文，可以理解为一个进程的状态(state)，包含各种">
@@ -91,20 +91,21 @@
       
         <h2 id="PowerPC_u6307_u4EE4_u96C6_u7ED3_u6784_u4E4B_u540C_u6B65_u6307_u4EE4_uFF1ASync_u548CIsync"><a href="#PowerPC_u6307_u4EE4_u96C6_u7ED3_u6784_u4E4B_u540C_u6B65_u6307_u4EE4_uFF1ASync_u548CIsync" class="headerlink" title="PowerPC指令集结构之同步指令：Sync和Isync"></a>PowerPC指令集结构之同步指令：Sync和Isync</h2><p>Note:翻译自SynchronizingInstructions for PowerPC Instruction Set Architecture : Sync vs Isync，先行概念是ContextSwitch，上下文切换，一般发生在线程切换或者陷入内核的时候，保存上下文，所谓的上下文，可以理解为一个进程的状态(state)，包含各种寄存器的值之类的。个人翻译，英语也不是很好，难免会有很多疏漏之处，欢迎各位看到的朋友指正。</p>
 <p>PowerPC指令集提供两种用于同步的指令，他们是上下文同步和执行同步指令，这篇文档的所有信息都可以从：PowerPC Microprocessor Family: The Programming Environments for 32-BitProcessors.</p>
-<h3 id="u4E0A_u4E0B_u6587_u540C_u6B65_u6307_u4EE4"><a href="#u4E0A_u4E0B_u6587_u540C_u6B65_u6307_u4EE4" class="headerlink" title="上下文同步指令"></a><strong>上下文同步指令</strong></h3><pre><code>PowerPC的上下文同步指令包括isync，sc，和rfi。另外还有异常导致的上下文同步。这些指令用来保证在上下文切换之前的那些已经出现的指令正常执行完毕，同时保证上下文切换之后的那些指令工作正常。上下文同步指令需要在某几个寄存器的某些值改变的时候执行，具体的哪些寄存器和值回下这一页的最底部的表中列出来。
+<h3 id="u4E0A_u4E0B_u6587_u540C_u6B65_u6307_u4EE4"><a href="#u4E0A_u4E0B_u6587_u540C_u6B65_u6307_u4EE4" class="headerlink" title="上下文同步指令"></a>上下文同步指令</h3><pre><code>PowerPC的上下文同步指令包括isync，sc，和rfi。另外还有异常导致的上下文同步。这些指令用来保证在上下文切换之前的那些已经出现的指令正常执行完毕，同时保证上下文切换之后的那些指令工作正常。上下文同步指令需要在某几个寄存器的某些值改变的时候执行，具体的哪些寄存器和值回下这一页的最底部的表中列出来。
  上下文同步指令确保几个事情：
 </code></pre><p>1.指令调度停止，sc指令同时会确保没有更高优先级的异常存在。<br>2.之前的所有指令都已经完成，至少保证他们不能再引发任何异常。但是，跟多处理器和（内存、缓存）机制有关系，部分指令带来的内存存取其实不用保证完成。如果需要保证内存的存取也要完成，那么sync指令可以用来干这个。<br>3.之前已经在执行的指令会在他们被执行的线程（上下文）里完成（特权、保护、地址转换）<br>4.在同步指令之后的指令将会在新的线程（上下文）里执行<br>为了保证同步之后的上下文改变生效，指令（缓存）队列会清除，同时所有的这些指令会在新的上下文里面重新获取并放在恰当的地方。<br>所有的上下文同步指令都是执行同步。</p>
-<h3 id="u6267_u884C_u540C_u6B65_u6307_u4EE4"><a href="#u6267_u884C_u540C_u6B65_u6307_u4EE4" class="headerlink" title="执行同步指令"></a><strong>执行同步指令</strong></h3><pre><code>尽管上下文同步指令主要是用来保证上下文切换在正确的时间起作用，不过执行同步指令对于在多处理器实现的程序中提供一种排序功能和内存存取的方面也是用处很大的。这些指令可以被用来确保之前的指令在后续指令开始执行前就已经完成，而且不需要经过强制刷新预取的缓存指令的队列。这个特点对于特殊排序程序以及调试的帮助很大。但是，程序员们需要注意到的是，sync指令经常会花费大量的时间来完成，所以他不应该毫无节制的随意使用。对于许多想要强调加载存储顺序的程序来讲，eieio指令可能能够花费更小的时间来达到同样期望的效果。
+<h3 id="u6267_u884C_u540C_u6B65_u6307_u4EE4"><a href="#u6267_u884C_u540C_u6B65_u6307_u4EE4" class="headerlink" title="执行同步指令"></a>执行同步指令</h3><pre><code>尽管上下文同步指令主要是用来保证上下文切换在正确的时间起作用，不过执行同步指令对于在多处理器实现的程序中提供一种排序功能和内存存取的方面也是用处很大的。这些指令可以被用来确保之前的指令在后续指令开始执行前就已经完成，而且不需要经过强制刷新预取的缓存指令的队列。这个特点对于特殊排序程序以及调试的帮助很大。但是，程序员们需要注意到的是，sync指令经常会花费大量的时间来完成，所以他不应该毫无节制的随意使用。对于许多想要强调加载存储顺序的程序来讲，eieio指令可能能够花费更小的时间来达到同样期望的效果。
 仅执行同步指令（并且也不是上下文同步）和上下文同步指令有所区别，他们并不保证之后的指令执行在由同步指令创建的新的上下文中（指令队列没有被刷新，所以在同步过后的指令依旧执行在旧的上下文下）。新的上下文会在执行同步指令完成之后的某个时刻生效。就像上下文同步指令一样，所有的执行同步指令都会停止指令分发，并且会保证这些同步前的指令至少完成到不会引起异常的地步。
 一些执行同步指令举例如sync，mtmsr还有所有的上下文同步指令。
 Sync指令，除开是同步执行外，还可以在总线上广播，并且有时候用来和其他处理器一起同步相关连贯内存。不同于isync，sync会在考虑所有访问内存的其他处理器和机制下，强制完成所有的外存访问。
-</code></pre><p>###<strong>需要同步的指令表格</strong><br>         下面的这张表为所有不同在上下文切换过后需要同步的指令做了总结。这是一个总览，个别的处理器某些时候可能会需要额外的同步操作或者有其他的限制。请参考：PowerPC Microprocessor Family: The Programming Environments for 32-BitProcessors， 2.3.17章节。“”Synchronization Requirements for Special Registers and forLookaside Buffers”还有你的处理器的使用手册，以便得到更多完整信息。<br>除开下面罗列的指令之外，许多处理器在Hardware Implementation Registers（HIDs）的个别位改变时，也需要某些同步操作。举例来讲，在许多PowerPC上，在改变控制cache使能和为指令以及数据cache加锁的位之前，就需要同步操作。改变HID0寄存器的DCE和DLOCK位之前需要做一个sync操作，在设置ICE和ILOCK位之前需要做一个isync。请仔细的阅读你的处理器的使用手册，以便得到更多的有关于当HIDs的哪些位改变时需要哪些同步操作的信息。<br>请注意有些寄存器改变的位的不同可能需要不同的数据或指令同步操作。<br><img src="http://i4.tietuku.com/9039c8bb9ceede15.png" alt="图1"><br><img src="http://i4.tietuku.com/9b0b530b7c786f07.png" alt="图2"><br>资料来源：<br><img src="http://i4.tietuku.com/38b9fa929908bb49.png" alt="图3"></p>
+</code></pre><h3 id="u9700_u8981_u540C_u6B65_u7684_u6307_u4EE4_u8868_u683C"><a href="#u9700_u8981_u540C_u6B65_u7684_u6307_u4EE4_u8868_u683C" class="headerlink" title="需要同步的指令表格"></a>需要同步的指令表格</h3><pre><code>下面的这张表为所有不同在上下文切换过后需要同步的指令做了总结。这是一个总览，个别的处理器某些时候可能会需要额外的同步操作或者有其他的限制。请参考：PowerPC Microprocessor Family: The Programming Environments for 32-BitProcessors， 2.3.17章节。“&quot;Synchronization Requirements for Special Registers and forLookaside Buffers&quot;还有你的处理器的使用手册，以便得到更多完整信息。
+</code></pre><p>除开下面罗列的指令之外，许多处理器在Hardware Implementation Registers（HIDs）的个别位改变时，也需要某些同步操作。举例来讲，在许多PowerPC上，在改变控制cache使能和为指令以及数据cache加锁的位之前，就需要同步操作。改变HID0寄存器的DCE和DLOCK位之前需要做一个sync操作，在设置ICE和ILOCK位之前需要做一个isync。请仔细的阅读你的处理器的使用手册，以便得到更多的有关于当HIDs的哪些位改变时需要哪些同步操作的信息。<br>请注意有些寄存器改变的位的不同可能需要不同的数据或指令同步操作。<br><img src="http://i4.tietuku.com/9039c8bb9ceede15.png" alt="图1"><br><img src="http://i4.tietuku.com/9b0b530b7c786f07.png" alt="图2"><br>资料来源：<br><img src="http://i4.tietuku.com/38b9fa929908bb49.png" alt="图3"></p>
 <p><a href="http://download.csdn.net/detail/hahajinbu/9384697" target="_blank" rel="external">原版资料下载</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/07/sync-and-isync-翻译/" data-id="cij4cu9qj0001gcf5sx2jda11" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/07/sync-and-isync-翻译/" data-id="cij4cwbvj0001i8f55bgyx4hw" class="article-share-link">Share</a>
       
       
     </footer>
